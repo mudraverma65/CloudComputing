@@ -12,18 +12,13 @@ import java.io.FileReader;
 @RestController
 public class Controller2 {
     String returnResponse = null;
-
-
     @PostMapping(path = "/endpoint", consumes = "application/json")
     public String validateData(@RequestBody String response){
         try{
             JSONObject jsonObject = new JSONObject(response.toString());
             String fileName = jsonObject.getString("file").toString();
-            System.out.println("File: "+fileName);
             String product = jsonObject.getString("product").toString();
-            System.out.println("Product: "+product);
             response = calculate(fileName,product);
-
         }catch (Exception e){
             System.out.println("Exception "+e);
         }
@@ -37,30 +32,6 @@ public class Controller2 {
             String line;
             Integer sum=0;
             Integer lineNumber = 0;
-//            while ((line = bufferedReader.readLine()) != null && validCSV) {
-//                if (lineNumber == 0) {
-//                    String[] headerData = line.split(",");
-//                    if (headerData.length != 2 || !headerData[0].equalsIgnoreCase("product") || !headerData[1].equalsIgnoreCase("amount")) {
-//                        validCSV = false;
-//                    }
-//                } else {
-//                    String[] data = line.split(",");
-//                    if (data.length != 2) {
-//                        validCSV = false;
-//                    } else {
-//                        String product = data[0];
-//                        try {
-//                            Integer quantity = Integer.parseInt(data[1]);
-//                            if (product.equalsIgnoreCase(productName)) {
-//                                sum += quantity;
-//                            }
-//                        } catch (NumberFormatException e) {
-//                            validCSV = false;
-//                        }
-//                    }
-//                }
-//                lineNumber++;
-//            }
 
             while((line = bufferedReader.readLine())!=null && validCSV == true){
                 if(line.isEmpty()){
@@ -99,10 +70,5 @@ public class Controller2 {
             System.out.println("Exception:" +e);
         }
         return returnResponse;
-    }
-
-    @GetMapping("/greet")
-    public String greet() {
-        return "Greetings!";
     }
 }

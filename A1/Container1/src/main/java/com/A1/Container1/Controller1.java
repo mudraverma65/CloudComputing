@@ -1,7 +1,6 @@
 package com.A1.Container1;
 
 import org.json.JSONObject;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,16 +17,11 @@ public class Controller1 {
     @PostMapping(path = "/calculate", consumes = "application/json")
     public String receiveJson(@RequestBody String response){
         try{
-            System.out.println("Received Json: " +response);
             JSONObject jsonObject = new JSONObject(response.toString());
             String fileName = jsonObject.getString("file").toString();
-            System.out.println("File: "+fileName);
-            String product = jsonObject.getString("product").toString();
-            System.out.println("Product: "+product);
             responseReceived = generateResponse(fileName, response);
         }
         catch(Exception e) {
-            responseReceived = "Exception: " + e;
             System.out.println("Exception: " + e);
         }
         return responseReceived;
@@ -47,10 +41,6 @@ public class Controller1 {
                     outputStream.write(requestBodyBytes);
                     outputStream.flush();
                 }
-//                DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
-//                outputStream.writeBytes(response);
-//                outputStream.flush();
-//                outputStream.close();
                 int responseCode = connection.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -64,7 +54,7 @@ public class Controller1 {
                 }
             }
             catch(Exception e){
-                System.out.println("EEE: "+e);
+                System.out.println("Exception: "+e);
             }
         }
         return responseReceived;
@@ -74,17 +64,12 @@ public class Controller1 {
         try{
             if(fileName==null){
                 responseReceived = "{\"file\": \"" + fileName + "\", \"error\": \"Invalid JSON input\"}";
-                System.out.println("Invalid JSON input");
                 return false;
             }
-//            String filePath = fileName;
             String filePath = "/app/"+fileName;
-//            String filePath = fileName;
-            System.out.println(filePath);
             File file = new File(filePath);
             if(!file.exists()){
                 responseReceived = "{\"file\": \"" + fileName + "\", \"error\": \"File Not Found\"}";
-                System.out.println("File Not Found");
                 return false;
             }
         }
@@ -92,9 +77,5 @@ public class Controller1 {
             System.out.println("Exception: "+e);
         }
         return true;
-    }
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello, World!";
     }
 }
