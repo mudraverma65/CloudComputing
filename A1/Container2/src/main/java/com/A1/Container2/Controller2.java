@@ -37,57 +37,57 @@ public class Controller2 {
             String line;
             Integer sum=0;
             Integer lineNumber = 0;
-            while ((line = bufferedReader.readLine()) != null && validCSV) {
-                if (lineNumber == 0) {
+//            while ((line = bufferedReader.readLine()) != null && validCSV) {
+//                if (lineNumber == 0) {
+//                    String[] headerData = line.split(",");
+//                    if (headerData.length != 2 || !headerData[0].equalsIgnoreCase("product") || !headerData[1].equalsIgnoreCase("amount")) {
+//                        validCSV = false;
+//                    }
+//                } else {
+//                    String[] data = line.split(",");
+//                    if (data.length != 2) {
+//                        validCSV = false;
+//                    } else {
+//                        String product = data[0];
+//                        try {
+//                            Integer quantity = Integer.parseInt(data[1]);
+//                            if (product.equalsIgnoreCase(productName)) {
+//                                sum += quantity;
+//                            }
+//                        } catch (NumberFormatException e) {
+//                            validCSV = false;
+//                        }
+//                    }
+//                }
+//                lineNumber++;
+//            }
+
+            while((line = bufferedReader.readLine())!=null && validCSV == true){
+                if(line.isEmpty()){
+                    validCSV = false;
+                }
+
+                if(lineNumber == 0){
                     String[] headerData = line.split(",");
-                    if (headerData.length != 2 || !headerData[0].equalsIgnoreCase("product") || !headerData[1].equalsIgnoreCase("amount")) {
+                    if(!headerData[0].equals("product") && !headerData[1].equals("amount")){
                         validCSV = false;
                     }
-                } else {
+                }
+
+                if (lineNumber != 0) {
                     String[] data = line.split(",");
-                    if (data.length != 2) {
-                        validCSV = false;
-                    } else {
+                    if (data.length == 2) {
                         String product = data[0];
-                        try {
-                            Integer quantity = Integer.parseInt(data[1]);
-                            if (product.equalsIgnoreCase(productName)) {
-                                sum += quantity;
-                            }
-                        } catch (NumberFormatException e) {
-                            validCSV = false;
+                        if (product.equals(productName)) {
+                            Integer quantity = Integer.valueOf(data[1]);
+                            sum += quantity;
                         }
+                    } else {
+                        validCSV = false;
                     }
                 }
                 lineNumber++;
             }
-//            while((line = bufferedReader.readLine())!=null && validCSV == true){
-//                if(line.isEmpty()){
-//                    validCSV = false;
-//                }
-//
-//                if(lineNumber == 0){
-//                    String[] headerData = line.split(",");
-//                    if(!headerData[0].equals("product") && !headerData[1].equals("amount")){
-//                        validCSV = false;
-//                    }
-//                }
-//
-//                if (lineNumber != 0) {
-//                    String[] data = line.split(",");
-//                    if (data.length == 2) {
-//                        String product = data[0];
-//                        if (product.equals(productName)) {
-//                            Integer quantity = Integer.valueOf(data[1]);
-//                            sum += quantity;
-//                        }
-//                    } else {
-//                        validCSV = false;
-//                    }
-//                }
-//
-//                lineNumber++;
-//            }
             if(validCSV == false){
                 returnResponse = "{\"file\": \"" + fileName + "\", \"error\": \"Input file not in CSV format.\"}";
             }
