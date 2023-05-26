@@ -36,7 +36,7 @@ public class Controller1 {
     public String generateResponse(String fileName, String response){
         if(validFile(fileName)){
             try{
-                String url = "http://localhost:6001/endpoint";
+                String url = "http://container2:6001/endpoint";
                 HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type","application/json");
@@ -77,8 +77,9 @@ public class Controller1 {
                 System.out.println("Invalid JSON input");
                 return false;
             }
-//            String filePath = "/C1/"+fileName;
-            String filePath = "Container1/"+fileName;
+//            String filePath = fileName;
+            String filePath = "/app/"+fileName;
+//            String filePath = fileName;
             System.out.println(filePath);
             File file = new File(filePath);
             if(!file.exists()){

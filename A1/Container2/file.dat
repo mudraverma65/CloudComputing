@@ -1,7 +1,0 @@
-product,amount
-wheat,10
-wheat,20
-oats,5
-barley,6
-
-docker run -p 9090:8080 -v /file.dat:/C1/file.dat docker-spring
