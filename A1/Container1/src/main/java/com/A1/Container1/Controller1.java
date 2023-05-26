@@ -17,8 +17,11 @@ public class Controller1 {
     @PostMapping(path = "/calculate", consumes = "application/json")
     public String receiveJson(@RequestBody String response){
         try{
+            String fileName = null;
             JSONObject jsonObject = new JSONObject(response.toString());
-            String fileName = jsonObject.getString("file").toString();
+            if(jsonObject.isNull("file") == false){
+                fileName = jsonObject.getString("file").toString();
+            }
             responseReceived = generateResponse(fileName, response);
         }
         catch(Exception e) {
