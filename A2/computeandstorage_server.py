@@ -6,6 +6,7 @@ import computeandstorage_pb2
 import computeandstorage_pb2_grpc
 import requests
 import json
+import urllib.parse
 import boto3
 
 
@@ -34,21 +35,33 @@ class EC2Operations(computeandstorage_pb2_grpc.EC2OperationsServicer):
         response = computeandstorage_pb2.StoreReply(s3uri=json.dumps(s3_uri))
         return response
 
-    # def AppendData(self,request,context):
-    #     s3 = boto3.client('s3')
-    #     bucket_name = 'computeandstorage-grpc'
-    #     file_path = 'computeandstorage.txt'
+    def AppendData(self,request,context):
+        s3 = boto3.client('s3')
+        bucket_name = 'computeandstorage-grpc'
+        file_path = 'computeandstorage.txt'
 
-    #     response = s3.get_object(Bucket=bucket_name, Key=file_path)
-    #     existing_data = response['Body'].read().decode('utf-8')
+        response = s3.get_object(Bucket=bucket_name, Key=file_path)
+        existing_data = response['Body'].read().decode('utf-8')
 
-    #     json_data = json.loads(request.data)
-    #     new_data = json_data["data"]
-    #     updated_data = existing_data + '\n' + new_data
-    #     s3.put_object(Bucket=bucket_name, Key=file_path, Body=updated_data)
-    #     print("Data appended to the file in S3.")
-    #     response = computeandstorage_pb2.AppendReply()
-    #     return response
+        json_data = json.loads(request.data)
+        new_data = json_data["data"]
+        updated_data = existing_data + '\n' + new_data
+        s3.put_object(Bucket=bucket_name, Key=file_path, Body=updated_data)
+        print("Data appended to the file in S3.")
+        response = computeandstorage_pb2.AppendReply()
+        return response
+    
+    def DeleteFile(self, request, context):
+        delete_data = json.loads(request.s3uri)
+        delete_url = delete_data["s3uri"]
+
+        s3 = boto3.client('s3')
+        parsed_url = urllib.parse.urlparse(delete_url)
+        bucket_name = 'computeandstorage-grpc'
+        # bucket_name = parsed_url.netloc
+        object_key = parsed_url.path.lstrip('/')
+        s3.delete_object(Bucket=bucket_name, Key=object_key)
+        print("Object deleted successfully!")
 
 
 
