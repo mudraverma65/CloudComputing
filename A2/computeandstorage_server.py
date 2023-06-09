@@ -4,7 +4,6 @@ import logging
 import grpc
 import computeandstorage_pb2
 import computeandstorage_pb2_grpc
-import requests
 import json
 import urllib.parse
 import boto3
@@ -14,7 +13,6 @@ class EC2Operations(computeandstorage_pb2_grpc.EC2OperationsServicer):
 
     def SayHello(self, request, context):
         return computeandstorage_pb2.HelloReply(message='Hello, %s!' % request.name)
-    
     
     def StoreData(self,request,context):
         json_data = json.loads(request.data)
@@ -31,7 +29,6 @@ class EC2Operations(computeandstorage_pb2_grpc.EC2OperationsServicer):
         url = s3.generate_presigned_url('get_object', Params={'Bucket': 'computeandstorage-grpc', 'Key': 'computeandstorage.txt'})
 
         s3_uri = {"s3uri":url}
-        # s3_uri = "s3://your-bucket/your-object"
         response = computeandstorage_pb2.StoreReply(s3uri=json.dumps(s3_uri))
         return response
 
@@ -58,12 +55,12 @@ class EC2Operations(computeandstorage_pb2_grpc.EC2OperationsServicer):
         s3 = boto3.client('s3')
         parsed_url = urllib.parse.urlparse(delete_url)
         bucket_name = 'computeandstorage-grpc'
-        # bucket_name = parsed_url.netloc
         object_key = parsed_url.path.lstrip('/')
+        
         s3.delete_object(Bucket=bucket_name, Key=object_key)
         print("Object deleted successfully!")
-
-
+        response = computeandstorage_pb2.DeleteReply()
+        return response
 
 def serve():
     port = '50051'
