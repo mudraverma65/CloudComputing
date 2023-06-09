@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import computeandstorage_pb2 as computeandstorage__pb2
+from protos import computeandstorage_pb2 as protos_dot_computeandstorage__pb2
 
 
 class EC2OperationsStub(object):
@@ -14,36 +14,25 @@ class EC2OperationsStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.SayHello = channel.unary_unary(
-                '/EC2Operations/SayHello',
-                request_serializer=computeandstorage__pb2.HelloRequest.SerializeToString,
-                response_deserializer=computeandstorage__pb2.HelloReply.FromString,
-                )
         self.StoreData = channel.unary_unary(
-                '/EC2Operations/StoreData',
-                request_serializer=computeandstorage__pb2.StoreRequest.SerializeToString,
-                response_deserializer=computeandstorage__pb2.StoreReply.FromString,
+                '/computeandstorage.EC2Operations/StoreData',
+                request_serializer=protos_dot_computeandstorage__pb2.StoreRequest.SerializeToString,
+                response_deserializer=protos_dot_computeandstorage__pb2.StoreReply.FromString,
                 )
         self.AppendData = channel.unary_unary(
-                '/EC2Operations/AppendData',
-                request_serializer=computeandstorage__pb2.AppendRequest.SerializeToString,
-                response_deserializer=computeandstorage__pb2.AppendReply.FromString,
+                '/computeandstorage.EC2Operations/AppendData',
+                request_serializer=protos_dot_computeandstorage__pb2.AppendRequest.SerializeToString,
+                response_deserializer=protos_dot_computeandstorage__pb2.AppendReply.FromString,
                 )
         self.DeleteFile = channel.unary_unary(
-                '/EC2Operations/DeleteFile',
-                request_serializer=computeandstorage__pb2.DeleteRequest.SerializeToString,
-                response_deserializer=computeandstorage__pb2.DeleteReply.FromString,
+                '/computeandstorage.EC2Operations/DeleteFile',
+                request_serializer=protos_dot_computeandstorage__pb2.DeleteRequest.SerializeToString,
+                response_deserializer=protos_dot_computeandstorage__pb2.DeleteReply.FromString,
                 )
 
 
 class EC2OperationsServicer(object):
     """Missing associated documentation comment in .proto file."""
-
-    def SayHello(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
 
     def StoreData(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -66,52 +55,30 @@ class EC2OperationsServicer(object):
 
 def add_EC2OperationsServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'SayHello': grpc.unary_unary_rpc_method_handler(
-                    servicer.SayHello,
-                    request_deserializer=computeandstorage__pb2.HelloRequest.FromString,
-                    response_serializer=computeandstorage__pb2.HelloReply.SerializeToString,
-            ),
             'StoreData': grpc.unary_unary_rpc_method_handler(
                     servicer.StoreData,
-                    request_deserializer=computeandstorage__pb2.StoreRequest.FromString,
-                    response_serializer=computeandstorage__pb2.StoreReply.SerializeToString,
+                    request_deserializer=protos_dot_computeandstorage__pb2.StoreRequest.FromString,
+                    response_serializer=protos_dot_computeandstorage__pb2.StoreReply.SerializeToString,
             ),
             'AppendData': grpc.unary_unary_rpc_method_handler(
                     servicer.AppendData,
-                    request_deserializer=computeandstorage__pb2.AppendRequest.FromString,
-                    response_serializer=computeandstorage__pb2.AppendReply.SerializeToString,
+                    request_deserializer=protos_dot_computeandstorage__pb2.AppendRequest.FromString,
+                    response_serializer=protos_dot_computeandstorage__pb2.AppendReply.SerializeToString,
             ),
             'DeleteFile': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteFile,
-                    request_deserializer=computeandstorage__pb2.DeleteRequest.FromString,
-                    response_serializer=computeandstorage__pb2.DeleteReply.SerializeToString,
+                    request_deserializer=protos_dot_computeandstorage__pb2.DeleteRequest.FromString,
+                    response_serializer=protos_dot_computeandstorage__pb2.DeleteReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'EC2Operations', rpc_method_handlers)
+            'computeandstorage.EC2Operations', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
 class EC2Operations(object):
     """Missing associated documentation comment in .proto file."""
-
-    @staticmethod
-    def SayHello(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/EC2Operations/SayHello',
-            computeandstorage__pb2.HelloRequest.SerializeToString,
-            computeandstorage__pb2.HelloReply.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def StoreData(request,
@@ -124,9 +91,9 @@ class EC2Operations(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/EC2Operations/StoreData',
-            computeandstorage__pb2.StoreRequest.SerializeToString,
-            computeandstorage__pb2.StoreReply.FromString,
+        return grpc.experimental.unary_unary(request, target, '/computeandstorage.EC2Operations/StoreData',
+            protos_dot_computeandstorage__pb2.StoreRequest.SerializeToString,
+            protos_dot_computeandstorage__pb2.StoreReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -141,9 +108,9 @@ class EC2Operations(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/EC2Operations/AppendData',
-            computeandstorage__pb2.AppendRequest.SerializeToString,
-            computeandstorage__pb2.AppendReply.FromString,
+        return grpc.experimental.unary_unary(request, target, '/computeandstorage.EC2Operations/AppendData',
+            protos_dot_computeandstorage__pb2.AppendRequest.SerializeToString,
+            protos_dot_computeandstorage__pb2.AppendReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -158,8 +125,8 @@ class EC2Operations(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/EC2Operations/DeleteFile',
-            computeandstorage__pb2.DeleteRequest.SerializeToString,
-            computeandstorage__pb2.DeleteReply.FromString,
+        return grpc.experimental.unary_unary(request, target, '/computeandstorage.EC2Operations/DeleteFile',
+            protos_dot_computeandstorage__pb2.DeleteRequest.SerializeToString,
+            protos_dot_computeandstorage__pb2.DeleteReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

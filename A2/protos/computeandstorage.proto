@@ -1,7 +1,8 @@
 syntax = "proto3";
 
+package computeandstorage;
+
 service EC2Operations {
-    rpc SayHello (HelloRequest) returns (HelloReply) {}
     rpc StoreData (StoreRequest) returns (StoreReply) {}
     rpc AppendData (AppendRequest) returns (AppendReply) {}
     rpc DeleteFile (DeleteRequest) returns (DeleteReply) {}
@@ -26,12 +27,3 @@ message DeleteRequest {
 }
 
 message DeleteReply {}
-
-message HelloRequest {
-  string name = 1;
-}
-
-// The response message containing the greetings
-message HelloReply {
-  string message = 1;
-}
