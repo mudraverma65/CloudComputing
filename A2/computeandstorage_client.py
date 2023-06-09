@@ -27,7 +27,7 @@ def run():
         print(received_json["s3uri"])
 
         #AppendData
-        append_data = {"data":"Banner ID: B00932103"}
+        append_data = {"data":"Banner ID: B00932103-00000"}
         request = computeandstorage_pb2.AppendRequest(data=json.dumps(append_data))
         response = stub.AppendData(request)
 
