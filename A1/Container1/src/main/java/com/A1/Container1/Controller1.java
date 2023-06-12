@@ -16,6 +16,7 @@ public class Controller1 {
 
     @PostMapping(path = "/calculate", consumes = "application/json")
     public String receiveJson(@RequestBody String response){
+        JSONObject returnJson = new JSONObject();
         try{
             String fileName = null;
             JSONObject jsonObject = new JSONObject(response.toString());
@@ -25,6 +26,7 @@ public class Controller1 {
             responseReceived = generateResponse(fileName, response);
         }
         catch(Exception e) {
+            responseReceived = "{\"file\": null, \"error\": \"Invalid JSON input.\"}";
             System.out.println("Exception: " + e);
         }
         return responseReceived;
@@ -48,7 +50,7 @@ public class Controller1 {
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                     String line;
-                    StringBuffer myResponse = new StringBuffer();
+                    StringBuilder myResponse = new StringBuilder();
                     while ((line = reader.readLine()) != null) {
                         myResponse.append(line);
                     }
@@ -66,17 +68,18 @@ public class Controller1 {
     public Boolean validFile(String fileName){
         try{
             if(fileName==null){
-                responseReceived = "{\"file\": \"" + fileName + "\", \"error\": \"Invalid JSON input\"}";
+                responseReceived = "{\"file\": null, \"error\": \"Invalid JSON input.\"}";
                 return false;
             }
             String filePath = "/app/"+fileName;
             File file = new File(filePath);
             if(!file.exists()){
-                responseReceived = "{\"file\": \"" + fileName + "\", \"error\": \"File Not Found\"}";
+                responseReceived = "{\"file\": \"" + fileName + "\", \"error\": \"File not found.\"}";
                 return false;
             }
         }
         catch (Exception e){
+            responseReceived = "{\"file\": null, \"error\": \"Invalid JSON input.\"}";
             System.out.println("Exception: "+e);
         }
         return true;

@@ -11,12 +11,16 @@ import java.io.FileReader;
 
 @RestController
 public class Controller2 {
+
+    JSONObject returnJson = new JSONObject();
+
     String returnResponse = null;
     @PostMapping(path = "/endpoint", consumes = "application/json")
     public String validateData(@RequestBody String response){
         try{
             JSONObject jsonObject = new JSONObject(response.toString());
-            String fileName = jsonObject.getString("file").toString();
+            String fileName = null;
+            fileName = jsonObject.getString("file").toString();
             String product = jsonObject.getString("product").toString();
             response = calculate(fileName,product);
         }catch (Exception e){
@@ -63,7 +67,7 @@ public class Controller2 {
                 returnResponse = "{\"file\": \"" + fileName + "\", \"error\": \"Input file not in CSV format.\"}";
             }
             else{
-                returnResponse = "{\"file\": \"" + fileName + "\", \"sum\": \"" + sum + "\"}";
+                returnResponse = "{\"file\": \"" + fileName + "\", \"sum\": " + sum + "}";
             }
         }
         catch (Exception e){

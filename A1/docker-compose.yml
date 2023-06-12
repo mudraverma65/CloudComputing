@@ -1,6 +1,6 @@
 services:
   container1:
-    image: mudraverma/docker5409_mudra:image_container1
+    image: image_container1
     container_name: container1
     ports:
       - 6000:6000
@@ -10,7 +10,7 @@ services:
       - .:/app
 
   container2:
-    image: mudraverma/docker5409_mudra:image_container2
+    image: image_container2
     container_name: container2
     ports:
       - 6001:6001
