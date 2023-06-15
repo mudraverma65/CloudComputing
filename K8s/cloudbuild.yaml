@@ -23,16 +23,6 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'push',  'us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image2:latest' ]
 
-#  # Deploy the container image to GKE
-#  - name: 'gcr.io/cloud-builders/gke-deploy'
-#    args:
-#      - run
-#      - --filename=deployment.yaml
-#      - --image=us-central1-docker.pkg.dev/b00932103-5409/quickstart-docker-rep/quickstart-image:latest
-#      - --cluster=hello-cluster
-#      - --location=us-central1
-#    timeout: 1200s
-
 # Store images in Google Artifact Registry
 images:
   - us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image1:latest
