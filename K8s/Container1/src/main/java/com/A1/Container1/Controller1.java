@@ -32,6 +32,47 @@ public class Controller1 {
         return responseReceived;
     }
 
+    @PostMapping(path="/store-file", consumes = "application/json")
+    public String storeFile(@RequestBody String response){
+        JSONObject returnJson = new JSONObject();
+        try{
+            String fileName = null;
+            String storeData = null;
+            JSONObject jsonObject = new JSONObject(response.toString());
+            if(jsonObject.isNull("file") == false){
+                fileName = jsonObject.getString("file").toString();
+                storeData = jsonObject.getString("data").toString();
+                responseReceived = storeResponse(fileName, storeData);
+            }
+            else {
+                responseReceived = "{\"file\": null, \"error\": \"Invalid JSON input.\"}";
+            }
+        }
+        catch(Exception e) {
+            responseReceived = "{\"file\": null, \"error\": \"Invalid JSON input.\"}";
+            System.out.println("Exception: " + e);
+        }
+        return responseReceived;
+    }
+
+    public String storeResponse(String fileName, String storeData){
+        try{
+            File file = new File(fileName);
+            // Replace '\n' with the system's line separator
+            String formattedData = storeData.replace("\\n", System.lineSeparator());
+            // Create a FileWriter to write the data to the file
+            FileWriter fileWriter = new FileWriter(fileName);
+            fileWriter.write(formattedData);
+            fileWriter.close();
+            responseReceived = "{\"file\": \"" + fileName + "\", \"message\": \"Success.\"}";
+        }
+        catch (Exception e){
+            System.out.println(e);
+            responseReceived = "{\"file\": \"" + fileName + "\", \"error\": \"Error while storing the file to the storage.\"}";
+        }
+        return responseReceived;
+    }
+
     public String generateResponse(String fileName, String response){
         if(validFile(fileName)){
             try{
