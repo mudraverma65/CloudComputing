@@ -57,7 +57,8 @@ public class Controller1 {
 
     public String storeResponse(String fileName, String storeData){
         try{
-            File file = new File(fileName);
+            String filePath = "/app/" + fileName;
+            File file = new File(filePath);
             // Replace '\n' with the system's line separator
             String formattedData = storeData.replace("\\n", System.lineSeparator());
             // Create a FileWriter to write the data to the file
