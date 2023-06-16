@@ -23,6 +23,21 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'push',  'us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image2:latest' ]
 
+#  - name: 'gcr.io/cloud-builders/kubectl'
+#    args: [
+#      'apply',
+#      '-f',
+#      'deployment1.yaml'
+#    ]
+#
+#  - name: 'gcr.io/cloud-builders/kubectl'
+#    args: [
+#      'apply',
+#      '-f',
+#      'deployment2.yaml'
+#    ]
+
+
 # Store images in Google Artifact Registry
 images:
   - us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image1:latest

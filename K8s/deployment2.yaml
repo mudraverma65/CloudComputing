@@ -34,3 +34,21 @@ spec:
         - name: my-volume
           persistentVolumeClaim:
             claimName: my-pvc
+
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: kubernetes-5409-c1-s2
+#  labels:
+#    app: "kubernetes-5409"
+#spec:
+#  selector:
+#    app: "kubernetes-5409"
+#  ports:
+#    - protocol: TCP
+#      port: 8080
+#      targetPort: 6001
+#    - protocol: TCP
+#      port: 8081
+#      targetPort: 6001
