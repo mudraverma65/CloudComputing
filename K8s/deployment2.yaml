@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kubernetes-5409-c1
+  name: kubernetes-5409-c2
   namespace: default
   labels:
-    app: kubernetes-5409-c1
+    app: kubernetes-5409-c2
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: kubernetes-5409-c1
+      app: kubernetes-5409-c2
   template:
     metadata:
       labels:
-        app: kubernetes-5409-c1
+        app: kubernetes-5409-c2
     spec:
       containers:
-        - name: kube-container1
-          image: us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image1:latest
-          ports:
-            - containerPort: 6000
-          volumeMounts:
-            - name: my-volume
-              mountPath: /app
+#        - name: kube-container1
+#          image: us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image1:latest
+#          ports:
+#            - containerPort: 6000
+#          volumeMounts:
+#            - name: my-volume
+#              mountPath: /app
         - name: kube-container2
           image: us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image2:latest
           ports:

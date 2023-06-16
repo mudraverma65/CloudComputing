@@ -23,13 +23,13 @@ spec:
           volumeMounts:
             - name: my-volume
               mountPath: /app
-        - name: kube-container2
-          image: us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image2:latest
-          ports:
-            - containerPort: 6001
-          volumeMounts:
-            - name: my-volume
-              mountPath: /app
+#        - name: kube-container2
+#          image: us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image2:latest
+#          ports:
+#            - containerPort: 6001
+#          volumeMounts:
+#            - name: my-volume
+#              mountPath: /app
       volumes:
         - name: my-volume
           persistentVolumeClaim:
