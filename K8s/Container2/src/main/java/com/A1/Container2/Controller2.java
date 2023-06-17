@@ -14,8 +14,6 @@ import java.io.FileReader;
 @RestController
 public class Controller2 {
 
-    JSONObject returnJson = new JSONObject();
-
     String returnResponse = null;
     @PostMapping(path = "/endpoint", consumes = "application/json")
     public String validateData(@RequestBody String response){
@@ -42,6 +40,7 @@ public class Controller2 {
             Integer lineNumber = 0;
 
             while((line = bufferedReader.readLine())!=null && validCSV == true){
+                line = line.replaceAll("\\s", "");
                 if(line.isEmpty()){
                     validCSV = false;
                 }
@@ -53,19 +52,43 @@ public class Controller2 {
                     }
                 }
 
+//                if (lineNumber != 0) {
+//                    String[] data = line.split(",");
+//                    if (data.length == 2) {
+//                        String product = data[0];
+//                        if (product.equals(productName)) {
+//                            String quantityStr = data[1];
+//                            Integer quantity = Integer.valueOf(quantityStr);
+//                            sum += quantity;
+//                        }
+//                    } else {
+//                        validCSV = false;
+//                    }
+//                }
+
                 if (lineNumber != 0) {
                     String[] data = line.split(",");
-                    if (data.length == 2) {
-                        String product = data[0];
-                        if (product.equals(productName)) {
-                            String quantityStr = data[1].trim();
-                            Integer quantity = Integer.valueOf(quantityStr);
-                            sum += quantity;
-                        }
-                    } else {
+                    if (data.length != 2) {
                         validCSV = false;
+                        break;
+                    }
+
+                    String product = data[0];
+                    if (!product.equals(productName)) {
+                        lineNumber++;
+                        continue;
+                    }
+
+                    String quantityStr = data[1];
+                    try {
+                        int quantity = Integer.parseInt(quantityStr);
+                        sum += quantity;
+                    } catch (NumberFormatException e) {
+                        validCSV = false;
+                        break;
                     }
                 }
+
                 lineNumber++;
             }
             if(validCSV == false){

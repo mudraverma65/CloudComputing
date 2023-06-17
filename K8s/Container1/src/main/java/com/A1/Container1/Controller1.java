@@ -78,7 +78,7 @@ public class Controller1 {
     public String generateResponse(String fileName, String response){
         if(validFile(fileName)){
             try{
-                String url = "http://10.3.248.121:6001/endpoint";
+                String url = "http://10.3.248.22:6001/endpoint";
                 HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type","application/json");
@@ -114,7 +114,6 @@ public class Controller1 {
                 responseReceived = "{\"file\": null, \"error\": \"Invalid JSON input.\"}";
                 return false;
             }
-            String filePath = "/mudra_PV_dir/app/"+fileName;
 //            File file = new File(fileName);
             File file = new File("/app", fileName);
             if(!file.exists()){
