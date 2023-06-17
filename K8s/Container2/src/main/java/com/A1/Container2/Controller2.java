@@ -52,20 +52,6 @@ public class Controller2 {
                     }
                 }
 
-//                if (lineNumber != 0) {
-//                    String[] data = line.split(",");
-//                    if (data.length == 2) {
-//                        String product = data[0];
-//                        if (product.equals(productName)) {
-//                            String quantityStr = data[1];
-//                            Integer quantity = Integer.valueOf(quantityStr);
-//                            sum += quantity;
-//                        }
-//                    } else {
-//                        validCSV = false;
-//                    }
-//                }
-
                 if (lineNumber != 0) {
                     String[] data = line.split(",");
                     if (data.length != 2) {
@@ -96,7 +82,6 @@ public class Controller2 {
             }
             else{
                 returnResponse = "{\"file\": \"" + fileName + "\", \"sum\": \"" + sum + "\"}";
-                //returnResponse = "{\"file\": \"" + fileName + "\", \"sum\": " + sum + "}";
             }
         }
         catch (Exception e){

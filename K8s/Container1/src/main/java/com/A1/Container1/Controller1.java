@@ -59,11 +59,8 @@ public class Controller1 {
         try{
             String filePath = "/app/" + fileName;
             File file = new File("/app", fileName);
-            // Replace '\n' with the system's line separator
             String formattedData = storeData.replace("\\n", System.lineSeparator());
-            // Create a FileWriter to write the data to the file
             FileWriter fileWriter = new FileWriter(file);
-//            FileWriter fileWriter = new FileWriter(fileName);
             fileWriter.write(formattedData);
             fileWriter.close();
             responseReceived = "{\"file\": \"" + fileName + "\", \"message\": \"Success.\"}";
@@ -78,7 +75,7 @@ public class Controller1 {
     public String generateResponse(String fileName, String response){
         if(validFile(fileName)){
             try{
-                String url = "http://10.3.248.22:6001/endpoint";
+                String url = "http://10.3.251.29:6001/endpoint";
                 HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type","application/json");
@@ -114,7 +111,6 @@ public class Controller1 {
                 responseReceived = "{\"file\": null, \"error\": \"Invalid JSON input.\"}";
                 return false;
             }
-//            File file = new File(fileName);
             File file = new File("/app", fileName);
             if(!file.exists()){
                 responseReceived = "{\"file\": \"" + fileName + "\", \"error\": \"File not found.\"}";
