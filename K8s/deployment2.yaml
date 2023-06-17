@@ -16,13 +16,6 @@ spec:
         app: kubernetes-5409-c2
     spec:
       containers:
-#        - name: kube-container1
-#          image: us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image1:latest
-#          ports:
-#            - containerPort: 6000
-#          volumeMounts:
-#            - name: my-volume
-#              mountPath: /app
         - name: kube-container2
           image: us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image2:latest
           ports:
@@ -35,20 +28,19 @@ spec:
           persistentVolumeClaim:
             claimName: my-pvc
 
-#---
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: kubernetes-5409-c1-s2
-#  labels:
-#    app: "kubernetes-5409"
-#spec:
-#  selector:
-#    app: "kubernetes-5409"
-#  ports:
-#    - protocol: TCP
-#      port: 8080
-#      targetPort: 6001
-#    - protocol: TCP
-#      port: 8081
-#      targetPort: 6001
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "kubernetes-5409-c2-service"
+  namespace: "default"
+  labels:
+    app: "kubernetes-5409-c2"
+spec:
+  ports:
+    - protocol: "TCP"
+      port: 6001
+      targetPort: 6001
+  selector:
+    app: "kubernetes-5409-c2"
+  type: "ClusterIP"

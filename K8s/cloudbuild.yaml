@@ -1,45 +1,79 @@
 steps:
   # Docker Build
   - name: 'gcr.io/cloud-builders/docker'
-    args: [
-      'build',
-      '-t',
-      'us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image1:latest',
-      'Container1/'
-    ]
+    args:
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image1:latest'
+      - 'Container1/'
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: [
-      'build',
-      '-t',
-      'us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image2:latest',
-      'Container2/'
-    ]
+    args:
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image2:latest'
+      - 'Container2/'
 
   # Docker push to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push',  'us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image1:latest']
+    args:
+      - 'push'
+      - 'us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image1:latest'
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'push',  'us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image2:latest' ]
+    args:
+      - 'push'
+      - 'us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image2:latest'
 
-#  - name: 'gcr.io/cloud-builders/kubectl'
-#    args: [
-#      'apply',
-#      '-f',
-#      'deployment1.yaml'
-#    ]
-#
-#  - name: 'gcr.io/cloud-builders/kubectl'
-#    args: [
-#      'apply',
-#      '-f',
-#      'deployment2.yaml'
-#    ]
+  # Get cluster credentials and apply PVC
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        export CLOUDSDK_COMPUTE_REGION=us-central1
+        export CLOUDSDK_CONTAINER_CLUSTER=kubernetes-cluster
+        export KUBECTL_VERSION=1.21
+        gcloud container clusters get-credentials kubernetes-cluster --region us-central1 --project b00932103-5409 --quiet &&
+        kubectl apply -f pvc.yaml
 
+  # Apply PV
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      -
+#        export CLOUDSDK_COMPUTE_REGION=us-central1
+#        export CLOUDSDK_CONTAINER_CLUSTER=kubernetes-cluster
+#        export KUBECTL_VERSION=1.21
+#        gcloud container clusters get-credentials kubernetes-cluster --region us-central1 --project b00932103-5409 --quiet &&
+        kubectl apply -f pv.yaml
+
+  # Apply Deployment of workload 1
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        export CLOUDSDK_COMPUTE_REGION=us-central1
+        export CLOUDSDK_CONTAINER_CLUSTER=kubernetes-cluster
+        export KUBECTL_VERSION=1.21
+        gcloud container clusters get-credentials kubernetes-cluster --region us-central1 --project b00932103-5409 --quiet &&
+        kubectl apply -f deployment1.yaml
+
+  # Apply Deployment of workload 2
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        export CLOUDSDK_COMPUTE_REGION=us-central1
+        export CLOUDSDK_CONTAINER_CLUSTER=kubernetes-cluster
+        export KUBECTL_VERSION=1.21
+        gcloud container clusters get-credentials kubernetes-cluster --region us-central1 --project b00932103-5409 --quiet &&
+        kubectl apply -f deployment2.yaml
 
 # Store images in Google Artifact Registry
 images:
-  - us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image1:latest
-  - us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image2:latest
-
+  - 'us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image1:latest'
+  - 'us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image2:latest'

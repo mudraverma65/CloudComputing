@@ -23,32 +23,25 @@ spec:
           volumeMounts:
             - name: my-volume
               mountPath: /app
-#        - name: kube-container2
-#          image: us-central1-docker.pkg.dev/b00932103-5409/kubernetes-5409/kubernetes_image2:latest
-#          ports:
-#            - containerPort: 6001
-#          volumeMounts:
-#            - name: my-volume
-#              mountPath: /app
       volumes:
         - name: my-volume
           persistentVolumeClaim:
             claimName: my-pvc
 
-#---
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: kubernetes-5409-c1-s1
-#  labels:
-#    app: "kubernetes-5409"
-#spec:
-#  selector:
-#    app: "kubernetes-5409"
-#  ports:
-#    - protocol: TCP
-#      port: 8080
-#      targetPort: 6000
-#    - protocol: TCP
-#      port: 8081
-#      targetPort: 6000
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "kubernetes-5409-c1-service"
+  namespace: "default"
+  labels:
+    app: "kubernetes-5409-c1"
+spec:
+  ports:
+    - protocol: "TCP"
+      port: 6000
+      targetPort: 6000
+  selector:
+    app: "kubernetes-5409-c1"
+  type: "LoadBalancer"
+  loadBalancerIP: ""
