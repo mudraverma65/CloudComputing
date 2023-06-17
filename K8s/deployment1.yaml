@@ -15,7 +15,7 @@ spec:
       labels:
         app: kubernetes-5409-c1
       annotations:
-        deployment.kubernetes.io/revision: "1"
+        deployment.kubernetes.io/revision: "2"
     spec:
       containers:
         - name: kube-container1
