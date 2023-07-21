@@ -75,7 +75,7 @@ public class Controller1 {
     public String generateResponse(String fileName, String response){
         if(validFile(fileName)){
             try{
-                String url = "http://10.3.247.98:6001/endpoint";
+                String url = "http://10.3.249.172:6001/endpoint";
                 HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type","application/json");

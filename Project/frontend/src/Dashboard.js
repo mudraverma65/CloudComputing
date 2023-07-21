@@ -18,26 +18,52 @@ const Dashboard = () => {
       const fileName = selectedFile.name;
       const fileData = selectedFile;
       const s3BucketName = 'b00932103notes';
-
+  
       const params = {
         Bucket: s3BucketName,
         Key: fileName,
         Body: fileData
       };
-      s3.upload(params, (err, data) => {
+  
+      s3.upload(params, async (err, data) => {
         if (err) {
           console.error('Error uploading file to S3:', err);
         } else {
           const fileUrl = data.Location;
           console.log('File uploaded to S3 successfully:', data.Location);
-          console.log(fileUrl)
-          // Add your logic here to create an item in DynamoDB
-          // using the lecture name, course ID, and S3 URL
+  
+          // Prepare the request body
+          const requestBody = {
+            courseID: courseID,
+            lectureName: lectureName,
+            fileURL: fileUrl
+          };
+  
+          try {
+            const response = await fetch('https://44qf0igih4.execute-api.us-east-1.amazonaws.com/test/store-file', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(requestBody)
+            });
+  
+            if (response.ok) {
+              console.log('File information stored successfully');
+              // Add any additional logic or UI updates for successful storage
+            } else {
+              console.error('Error storing file information');
+              // Handle error case, display error message, or perform any necessary actions
+            }
+          } catch (error) {
+            console.error('Error storing file information:', error);
+            // Handle error case, display error message, or perform any necessary actions
+          }
         }
       });
     }
   };
-
+  
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {

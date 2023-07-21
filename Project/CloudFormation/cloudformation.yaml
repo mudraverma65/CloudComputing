@@ -1,0 +1,35 @@
+# AWSTemplateFormatVersion: "2010-09-09"
+# Resources:
+#   EC2Instance:
+#     Type: "AWS::EC2::Instance"
+#     Properties:
+#       ImageId: "ami-06ca3ca175f37dd66"  # Replace with your desired Amazon Machine Image (AMI) ID
+#       InstanceType: "t2.micro"  # Replace with your desired instance type
+#       KeyName: "project"    # Replace with the name of your EC2 key pair
+#       Tags:
+#         - Key: "Name"
+#           Value: "Project"  # Replace with your desired instance name
+
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  MyEC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-06ca3ca175f37dd66  # Replace with your desired AMI ID
+      KeyName: project  # Replace with your key pair name
+      SecurityGroups:
+        - Ref: MySecurityGroup
+      Tags:
+        - Key: "Name"
+          Value: "Project" 
+
+  MySecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Allow all inbound traffic
+      SecurityGroupIngress:
+        - IpProtocol: '-1'
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0

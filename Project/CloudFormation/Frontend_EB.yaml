@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Resources:
+  # Elastic Beanstalk Application to run the Frontend ReactJS Application 
+  NotesFrontendApplication:
+    Type: "AWS::ElasticBeanstalk::Application"
+    Properties:
+      Description: "Elastic Beanstalk Application for the Frontend"
+      ApplicationName: "NotesDistributionTest"
+
+  NotesFrontendAppVersion:
+    Type: "AWS::ElasticBeanstalk::ApplicationVersion"
+    Properties:
+      ApplicationName: !Ref NotesFrontendApplication
+      Description: "Application Version of the Frontend App"
+      SourceBundle:
+        S3Bucket: "b00932103project"
+        S3Key: "frontend-eb.zip"
+
+  NotesFrontendAppConfigTemplate:
+    Type: "AWS::ElasticBeanstalk::ConfigurationTemplate"
+    Properties: 
+      ApplicationName: !Ref NotesFrontendApplication
+      Description: "Configuration Template for the Frontend App"
+      SolutionStackName: "64bit Amazon Linux 2 v5.8.3 running Node.js 18"
+      OptionSettings: 
+        - Namespace: "aws:autoscaling:launchconfiguration"
+          OptionName: "InstanceType"
+          Value: "t3.micro,t3.small"
+        - Namespace: "aws:autoscaling:launchconfiguration"
+          OptionName: "EC2KeyName"
+          Value: "vockey"
+        - Namespace: "aws:autoscaling:launchconfiguration"
+          OptionName: "IamInstanceProfile"
+          Value: "LabInstanceProfile"
+        - Namespace: "aws:elasticbeanstalk:environment"
+          OptionName: "ServiceRole"
+          Value: "arn:aws:iam::581271972388:role/LabRole"
+        - Namespace: "aws:elasticbeanstalk:environment"
+          OptionName: "EnvironmentType"
+          Value: "SingleInstance"
+
+  NotesFrontendAppEnvironment:
+    Type: "AWS::ElasticBeanstalk::Environment"
+    Properties:
+      ApplicationName: !Ref NotesFrontendApplication
+      EnvironmentName: "NotesFrontendEnv"
+      TemplateName: !Ref NotesFrontendAppConfigTemplate
+      VersionLabel: !Ref NotesFrontendAppVersion
+
+Outputs:
+  ApplicationURL:
+    Description: "URL of the Elastic Beanstalk Frontend application"
+    Value:
+      Fn::Join:
+        - ""
+        - - "http://"
+          - Fn::GetAtt: [NotesFrontendAppEnvironment, EndpointURL]
