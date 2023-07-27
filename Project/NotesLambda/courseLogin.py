@@ -2,15 +2,14 @@ import boto3
 import json
 
 def lambda_handler(event, context):
-    # Retrieve the course code and password from the request body
+    # Retrieve the course code and password from the event directly
     try:
-        body = json.loads(event['body'])
-        courseID = body['courseID']
-        password = body['password']
+        courseID = event['courseID']
+        password = event['password']
     except KeyError:
         return {
             'statusCode': 400,
-            'body': json.dumps({'message': 'Invalid request body'})
+            'body': 'Invalid request format'
         }
     
     # Authenticate the course code and password against the DynamoDB table
@@ -18,13 +17,13 @@ def lambda_handler(event, context):
         # Successful login
         return {
             'statusCode': 200,
-            'body': json.dumps({'message': 'Login successful'})
+            'body': 'Login successful'
         }
     else:
         # Invalid credentials
         return {
             'statusCode': 401,
-            'body': json.dumps({'message': 'Invalid credentials'})
+            'body': 'Invalid credentials'
         }
 
 def authenticate_course(courseID, password):

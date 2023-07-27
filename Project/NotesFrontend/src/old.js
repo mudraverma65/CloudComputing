@@ -1,29 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+const coursesData = [
+  {
+    courseId: 'csci0001',
+    courseName: 'Cloud Computing',
+    instructor: 'John Doe'
+  },
+  {
+    courseId: 'csci0002',
+    courseName: 'Serverless',
+    instructor: 'Amy Adams'
+  },
+  {
+    courseId: 'csci0003',
+    courseName: 'Data Science',
+    instructor: 'Mike Smith'
+  }
+];
+
 const LandingPage = () => {
-  const [showModal, setShowModal] = useState(false);
+    const [showModal, setShowModal] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [email, setEmail] = useState('');
-  const [courseList, setCourseList] = useState([]);
   const [registrationMessage, setRegistrationMessage] = useState('');
-
-  useEffect(() => {
-    const fetchCourseList = async () => {
-      try {
-        const response = await fetch('https://lv1qrdjxz4.execute-api.us-east-1.amazonaws.com/prod/course-list');
-        const data = await response.json();
-        console.log(data); // Check the data fetched from the API
-        setCourseList(data.body);
-      } catch (error) {
-        console.error('Error fetching course list:', error);
-      }
-    };
-
-    fetchCourseList();
-  }, []);
 
   const handleRegister = (courseId) => {
     setSelectedCourse(courseId);
@@ -39,7 +41,7 @@ const LandingPage = () => {
 
   const handleRegisterCourse = async () => {
     try {
-      const response = await fetch('https://lv1qrdjxz4.execute-api.us-east-1.amazonaws.com/prod/register', {
+      const response = await fetch('https://44qf0igih4.execute-api.us-east-1.amazonaws.com/test/course-register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -64,18 +66,22 @@ const LandingPage = () => {
     }
     handleCloseModal();
   };
+  
 
   return (
     <div className="container">
       <h1 className="mt-5 mb-4">Available Courses</h1>
       <div className="row">
-        {courseList.map((course) => (
-          <div key={course.courseID} className="col-md-4 mb-4">
+        {coursesData.map((course) => (
+          <div key={course.courseId} className="col-md-4 mb-4">
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title">Course: {course.name}</h5>
+                <h5 className="card-title">Course: {course.courseName}</h5>
                 <p className="card-text">Instructor: {course.instructor}</p>
-                <button className="btn btn-primary" onClick={() => handleRegister(course.courseID)}>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => handleRegister(course.courseId)}
+                >
                   Register
                 </button>
               </div>
@@ -106,9 +112,8 @@ const LandingPage = () => {
             Register
           </Button>
         </Modal.Footer>
-      </Modal>
-
-      {registrationMessage && (
+        </Modal>
+        {registrationMessage && (
         <div className="mt-3 alert alert-success" role="alert">
           {registrationMessage}
         </div>

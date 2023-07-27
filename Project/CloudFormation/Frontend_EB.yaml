@@ -6,7 +6,7 @@ Resources:
     Type: "AWS::ElasticBeanstalk::Application"
     Properties:
       Description: "Elastic Beanstalk Application for the Frontend"
-      ApplicationName: "NotesDistributionTest"
+      ApplicationName: "NotesDistribution"
 
   NotesFrontendAppVersion:
     Type: "AWS::ElasticBeanstalk::ApplicationVersion"
@@ -14,8 +14,8 @@ Resources:
       ApplicationName: !Ref NotesFrontendApplication
       Description: "Application Version of the Frontend App"
       SourceBundle:
-        S3Bucket: "b00932103project"
-        S3Key: "frontend-eb.zip"
+        S3Bucket: "b00932103frontend"
+        S3Key: "NotesFrontend.zip"
 
   NotesFrontendAppConfigTemplate:
     Type: "AWS::ElasticBeanstalk::ConfigurationTemplate"
@@ -35,7 +35,7 @@ Resources:
           Value: "LabInstanceProfile"
         - Namespace: "aws:elasticbeanstalk:environment"
           OptionName: "ServiceRole"
-          Value: "arn:aws:iam::581271972388:role/LabRole"
+          Value: "arn:aws:iam::967969319497:role/LabRole"
         - Namespace: "aws:elasticbeanstalk:environment"
           OptionName: "EnvironmentType"
           Value: "SingleInstance"

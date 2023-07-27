@@ -1,0 +1,45 @@
+[
+    {
+      "courseID": "csci0001",
+      "name": "Introduction to Computer Science",
+      "instructor": "John Doe",
+      "students": ["mudraverma65@gmail.com"],
+      "password": "pass123"
+    },
+    {
+      "courseID": "math0001",
+      "name": "Mathematics Basics",
+      "instructor": "Jane Smith",
+      "students": ["mudraverma65@gmail.com"],
+      "password": "math123"
+    },
+    {
+      "courseID": "chem0001",
+      "name": "Chemistry Fundamentals",
+      "instructor": "Sarah Johnson",
+      "students": ["mudraverma65@gmail.com"],
+      "password": "chem123"
+    },
+    {
+        "courseID": "bio0001",
+        "name": "Human Biology",
+        "instructor": "Cillian Murphy",
+        "students": ["mudraverma65@gmail.com"],
+        "password": "bio123"
+    },
+    {
+        "courseID": "csci0002",
+        "name": "Software Testing",
+        "instructor": "Tony Stark",
+        "students": ["mudraverma65@gmail.com"],
+        "password": "test123"
+    },
+    {
+        "courseID": "art0001",
+        "name": "Innovative Arts",
+        "instructor": "Leonardo Dicaprio",
+        "students": ["mudraverma65@gmail.com"],
+        "password": "arts123"
+    }
+  ]
+  

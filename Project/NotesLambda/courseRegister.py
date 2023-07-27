@@ -14,7 +14,7 @@ def lambda_handler(event, context):
     if not validate_email(email_id):
         return {
             'statusCode': 400,
-            'body': json.dumps({'message': 'Invalid email format'})
+            'body': 'Invalid email format'
         }
     
     # Add the email ID to the set of email IDs for the course in DynamoDB
@@ -22,7 +22,7 @@ def lambda_handler(event, context):
     
     return {
         'statusCode': 200,
-        'body': json.dumps({'message': 'Registered to course successfully'})
+        'body': 'Registered to course successfully'
     }
 
 def validate_email(email):
