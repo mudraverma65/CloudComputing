@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { v4 as uuidv4 } from 'uuid';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -8,12 +9,14 @@ const LandingPage = () => {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [email, setEmail] = useState('');
   const [courseList, setCourseList] = useState([]);
+  const [token, setToken] = useState('');
   const [registrationMessage, setRegistrationMessage] = useState('');
+  
 
   useEffect(() => {
     const fetchCourseList = async () => {
       try {
-        const response = await fetch('https://lv1qrdjxz4.execute-api.us-east-1.amazonaws.com/prod/course-list');
+        const response = await fetch('https://tipv8u9h4m.execute-api.us-east-1.amazonaws.com/prod/course-list');
         const data = await response.json();
         console.log(data); // Check the data fetched from the API
         setCourseList(data.body);
@@ -28,6 +31,9 @@ const LandingPage = () => {
   const handleRegister = (courseId) => {
     setSelectedCourse(courseId);
     setShowModal(true);
+    const token = uuidv4();
+    setToken(token)
+    console.log(token)
   };
 
   const handleCloseModal = () => {
@@ -39,14 +45,15 @@ const LandingPage = () => {
 
   const handleRegisterCourse = async () => {
     try {
-      const response = await fetch('https://lv1qrdjxz4.execute-api.us-east-1.amazonaws.com/prod/register', {
+      const response = await fetch('https://tipv8u9h4m.execute-api.us-east-1.amazonaws.com/prod/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           emailID: email,
-          courseID: selectedCourse
+          courseID: selectedCourse,
+          Token: token
         })
       });
       if (response.ok) {

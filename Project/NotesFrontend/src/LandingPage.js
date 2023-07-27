@@ -13,7 +13,7 @@ const LandingPage = () => {
   useEffect(() => {
     const fetchCourseList = async () => {
       try {
-        const response = await fetch('https://g0gdiv0ap7.execute-api.us-east-1.amazonaws.com/prod/course-list');
+        const response = await fetch('https://mqywz41q78.execute-api.us-east-1.amazonaws.com/prod/course-list');
         const data = await response.json();
         console.log(data); // Check the data fetched from the API
         setCourseList(data.body);
@@ -39,7 +39,7 @@ const LandingPage = () => {
 
   const handleRegisterCourse = async () => {
     try {
-      const response = await fetch('https://g0gdiv0ap7.execute-api.us-east-1.amazonaws.com/prod/register', {
+      const response = await fetch('https://mqywz41q78.execute-api.us-east-1.amazonaws.com/prod/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

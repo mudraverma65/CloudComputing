@@ -2,10 +2,19 @@ import React, { useState, useEffect } from 'react';
 import AWS from 'aws-sdk';
 import { useParams } from 'react-router-dom';
 
+// import AWS from 'aws-sdk';
+
+
+// AWS.config.update({
+//   accessKeyId: 'ASIA6CX3XVJEUOB6UX5D',
+//   secretAccessKey: '2LIuDvtpK0zur2M+/AHcGuFwCk1lHArt17uL5vwI',
+//   region: 'us-east-1' // e.g., 'us-east-1'
+// });
+
 const Dashboard = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [courseDetails, setCourseDetails] = useState(null);
-  const [lectureName, setLectureName] = useState('');
+  const [lectureNo, setLectureName] = useState('');
   const s3 = new AWS.S3();
   const { courseID } = useParams();
   console.log(courseID)
@@ -15,14 +24,16 @@ const Dashboard = () => {
   };
 
   const handleFileUpload = () => {
-    if (selectedFile && lectureName) {
+    if (selectedFile && lectureNo) {
       const fileName = selectedFile.name;
       const fileData = selectedFile;
       const s3BucketName = 'b00932103-notes';
+
+      const folderKey = `${courseID}/${fileName}`;
   
       const params = {
         Bucket: s3BucketName,
-        Key: fileName,
+        Key: folderKey,
         Body: fileData
       };
   
@@ -34,32 +45,32 @@ const Dashboard = () => {
           console.log('File uploaded to S3 successfully:', data.Location);
   
           // Prepare the request body
-          const requestBody = {
-            courseID: courseID,
-            lectureName: lectureName,
-            fileURL: fileUrl
-          };
+          // const requestBody = {
+          //   courseID: courseID,
+          //   lectureNo: lectureNo,
+          //   fileURL: fileUrl
+          // };
   
-          try {
-            const response = await fetch('https://g0gdiv0ap7.execute-api.us-east-1.amazonaws.com/prod/store-file', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(requestBody)
-            });
+          // try {
+          //   const response = await fetch('https://lv1qrdjxz4.execute-api.us-east-1.amazonaws.com/prod/store-file', {
+          //     method: 'POST',
+          //     headers: {
+          //       'Content-Type': 'application/json'
+          //     },
+          //     body: JSON.stringify(requestBody)
+          //   });
   
-            if (response.ok) {
-              console.log('File information stored successfully');
-              // Add any additional logic or UI updates for successful storage
-            } else {
-              console.error('Error storing file information');
-              // Handle error case, display error message, or perform any necessary actions
-            }
-          } catch (error) {
-            console.error('Error storing file information:', error);
-            // Handle error case, display error message, or perform any necessary actions
-          }
+          //   if (response.ok) {
+          //     console.log('File information stored successfully');
+          //     // Add any additional logic or UI updates for successful storage
+          //   } else {
+          //     console.error('Error storing file information');
+          //     // Handle error case, display error message, or perform any necessary actions
+          //   }
+          // } catch (error) {
+          //   console.error('Error storing file information:', error);
+          //   // Handle error case, display error message, or perform any necessary actions
+          // }
         }
       });
     }
@@ -68,7 +79,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
-        const url = `https://g0gdiv0ap7.execute-api.us-east-1.amazonaws.com/prod/course?courseID=${courseID}`;
+        const url = `https://mqywz41q78.execute-api.us-east-1.amazonaws.com/prod/course?courseID=${courseID}`;
         const response = await fetch(url);
         const data = await response.json();
         setCourseDetails(data.body);
@@ -96,7 +107,7 @@ const Dashboard = () => {
           type="text"
           className="form-control"
           id="lecture"
-          value={lectureName}
+          value={lectureNo}
           onChange={(e) => setLectureName(e.target.value)}
         />
       </div>
@@ -107,7 +118,7 @@ const Dashboard = () => {
           type="file"
           className="form-control"
           id="file"
-          accept=".pdf,.doc,.docx,.txt"
+          accept=".pdf,.doc,.docx,.txt,.png"
           onChange={handleFileChange}
         />
       </div>
