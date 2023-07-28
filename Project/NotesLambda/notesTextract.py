@@ -55,7 +55,7 @@ def lambda_handler(event, context):
             
             file_url = f"https://{bucketName}.s3.amazonaws.com/output/{fileName}.txt"
             
-            message = f"Notes have been uploaded. \nFile Link:\n{file_url}"
+            message = f"{courseID} notes have been uploaded. \n\nFile Link:\n{file_url}"
             
             publish_message(topic_arn, message)
 

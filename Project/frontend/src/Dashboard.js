@@ -2,23 +2,14 @@ import React, { useState, useEffect } from 'react';
 import AWS from 'aws-sdk';
 import { useParams } from 'react-router-dom';
 
-// import AWS from 'aws-sdk';
-
-
-// AWS.config.update({
-//   AWS_ACCESS_KEY_ID: 'ASIA6CX3XVJEUOB6UX5D',
-//   AWS_SECRET_ACCESS_KEY: '2LIuDvtpK0zur2M+/AHcGuFwCk1lHArt17uL5vwI',
-//   region: 'us-east-1' // e.g., 'us-east-1'
-// });
-
 const Dashboard = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [courseDetails, setCourseDetails] = useState(null);
   const [lectureNo, setLectureName] = useState('');
   const s3 = new AWS.S3({
-    accessKeyId: 'ASIA6CX3XVJE6FF4RHFE',
-    secretAccessKey: '++W733PSzgiBMNHklTj2GZ03ERHTikRfV46uZ506',
-    sessionToken: 'FwoGZXIvYXdzENj//////////wEaDPtOT4WYWlEH0xCoHyLIAT4YA5YNv/rmdPVeHTo3npXqufRKqXr+lejAh9wLPEvVBYrzpR5Z96rSd1GMeGaITGX7uhHIyo+rZ0wZ+OqXybUFG+3DPdFBDQBfCpz+Rfsh1PQ0AwQ9MUFcpjOIAYTmQ668CFbugtBV9MUKffwjAGtQ8HDKk10jNZdhufbKB4KB2LQKxnnU0lk0p1zYDKokecoujeRv1FPAVWC97MN1sji69FtfO6AIi+tmW73evz0IIBdzWyYj5+M9OmjIng9Ohp/cG8yFw5YGKIv7iaYGMi0Vn5iNNJZB7IAoZBbT1hoEzQOihZFq5DpZpLkmrYBNC0T76VnjHNVswA2FXfo=',
+    accessKeyId: 'ASIA6CX3XVJE5FKH7LWL',
+    secretAccessKey: 'LvVl915FJx2LEvDD9CC5h01wK36cS5iqbD9BI5oB',
+    sessionToken: 'FwoGZXIvYXdzEOj//////////wEaDAe5ufMwwpI5D22JHSLIAd1opuQdWtrHhOOgFD3izpDdZSFCfEd8PTcdgff/DR8vina5ZibuXMS+ZydELeYazrZswF7VeuPyKr+IHnYdzDFIXdm/sOCVna82wn0nFKEuRkHJRHN0ya9iBke9AaG6rKdCJCR+rYaffstZMrpWpbYptpqZUE5lSbsuX3K2n85JeJKI7v3Pk+S2Qb/EGpJBzw2p59jckKcLx/OxWUqdJHzi5EDqKeJxnFsk85gEsDe7bQ6xeMfxMu3cCGjbjV1YzsnIMAza4d1sKODGjaYGMi3T5TCfG2xBIaASngWtkoxeanHHZThRcI5hqwjYzQag+qErR/Z4Dzvq8G+rNS4=',
     region: 'us-east-1' // e.g., 'us-east-1'
   });
   const { courseID } = useParams();
@@ -123,7 +114,7 @@ const Dashboard = () => {
           type="file"
           className="form-control"
           id="file"
-          accept=".pdf,.doc,.docx,.txt,.png"
+          accept=".pdf,.txt,.png,.jpeg,.jpg"
           onChange={handleFileChange}
         />
       </div>
