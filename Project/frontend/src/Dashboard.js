@@ -3,13 +3,14 @@ import AWS from 'aws-sdk';
 import { useParams } from 'react-router-dom';
 
 const Dashboard = () => {
+  const [uploadStatus, setUploadStatus] = useState(null); // To store upload status messages
   const [selectedFile, setSelectedFile] = useState(null);
   const [courseDetails, setCourseDetails] = useState(null);
   const [lectureNo, setLectureName] = useState('');
   const s3 = new AWS.S3({
-    accessKeyId: 'ASIA6CX3XVJE5FKH7LWL',
-    secretAccessKey: 'LvVl915FJx2LEvDD9CC5h01wK36cS5iqbD9BI5oB',
-    sessionToken: 'FwoGZXIvYXdzEOj//////////wEaDAe5ufMwwpI5D22JHSLIAd1opuQdWtrHhOOgFD3izpDdZSFCfEd8PTcdgff/DR8vina5ZibuXMS+ZydELeYazrZswF7VeuPyKr+IHnYdzDFIXdm/sOCVna82wn0nFKEuRkHJRHN0ya9iBke9AaG6rKdCJCR+rYaffstZMrpWpbYptpqZUE5lSbsuX3K2n85JeJKI7v3Pk+S2Qb/EGpJBzw2p59jckKcLx/OxWUqdJHzi5EDqKeJxnFsk85gEsDe7bQ6xeMfxMu3cCGjbjV1YzsnIMAza4d1sKODGjaYGMi3T5TCfG2xBIaASngWtkoxeanHHZThRcI5hqwjYzQag+qErR/Z4Dzvq8G+rNS4=',
+    accessKeyId: 'ASIA6CX3XVJEVBGBRVXH',
+    secretAccessKey: '5fRjt56W5W1txbkveFXv+t9EUY16t7bATzB6rSPW',
+    sessionToken: 'FwoGZXIvYXdzEPT//////////wEaDChyD1TYgG6hI0qrnCLIAeVtkC87VMQC+wnpbEO8FcmZKQY/qSyR24Gc7qaDIV5TeELNsSLZmRBoVdw64MoR+gN3mI5p80dp1dMBJdqR/SeU3Xc1kDpIjyu9zUV4q4UyJmlVmhG3lM/P1CM7GzKgusxSp5GZSSf6vrGUMUtzSUpwgQlRijCo9UM19EeyIXGKbP5Ly28xXxVUcKAYlmJSGa8lRM8zkPwyKM+0rzFAaX4ZWFdKaJsQ1UpJwadobvUfDy5/HoI8TIm2T3k/tEc5F29PRVYr5OYMKPaSkKYGMi07ZWytGLZ/vEn/pZUElxn61aXtc9lh6Z/ok964rMm7iYAsGxmbEUFY3gcPuoo=',
     region: 'us-east-1' // e.g., 'us-east-1'
   });
   const { courseID } = useParams();
@@ -36,37 +37,10 @@ const Dashboard = () => {
       s3.upload(params, (err, data) => {
         if (err) {
           console.error('Error uploading file to S3:', err);
+          setUploadStatus('Error uploading file to S3'); // Set error message
         } else {
-          const fileUrl = data.Location;
           console.log('File uploaded to S3 successfully:', data.Location);
-  
-          // Prepare the request body
-          // const requestBody = {
-          //   courseID: courseID,
-          //   lectureNo: lectureNo,
-          //   fileURL: fileUrl
-          // };
-  
-          // try {
-          //   const response = await fetch('https://lv1qrdjxz4.execute-api.us-east-1.amazonaws.com/prod/store-file', {
-          //     method: 'POST',
-          //     headers: {
-          //       'Content-Type': 'application/json'
-          //     },
-          //     body: JSON.stringify(requestBody)
-          //   });
-  
-          //   if (response.ok) {
-          //     console.log('File information stored successfully');
-          //     // Add any additional logic or UI updates for successful storage
-          //   } else {
-          //     console.error('Error storing file information');
-          //     // Handle error case, display error message, or perform any necessary actions
-          //   }
-          // } catch (error) {
-          //   console.error('Error storing file information:', error);
-          //   // Handle error case, display error message, or perform any necessary actions
-          // }
+          setUploadStatus('File uploaded successfully'); // Set success message
         }
       });
     }
@@ -75,7 +49,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
-        const url = `https://tipv8u9h4m.execute-api.us-east-1.amazonaws.com/prod/course?courseID=${courseID}`;
+        const url = `https://opv3f1heqe.execute-api.us-east-1.amazonaws.com/prod/course?courseID=${courseID}`;
         const response = await fetch(url);
         const data = await response.json();
         setCourseDetails(data.body);
@@ -94,6 +68,13 @@ const Dashboard = () => {
         <div>
           <h5>Course ID: {courseDetails.courseID}</h5>
           <h5>Instructor: {courseDetails.instructor}</h5>
+        </div>
+      )}
+
+      {/* Upload Status Messages */}
+      {uploadStatus && (
+        <div className={`alert ${uploadStatus.includes('Error') ? 'alert-danger' : 'alert-success'}`}>
+          {uploadStatus}
         </div>
       )}
 

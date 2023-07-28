@@ -65,16 +65,16 @@ Resources:
         S3Key: 'LambdaFunctions/courseRegister.zip'
 
   # Text Extract Lambda
-  NotesTextExtract:
-    Type: 'AWS::Lambda::Function'
-    Properties:
-      FunctionName: 'NotesTextExtract'
-      Runtime: 'python3.8'
-      Handler: 'notesTextract.lambda_handler'
-      Role: 'arn:aws:iam::967969319497:role/LabRole'
-      Code:
-        S3Bucket: 'b00932103backend'
-        S3Key: 'LambdaFunctions/notesTextract.zip'
+  # NotesTextExtract:
+  #   Type: 'AWS::Lambda::Function'
+  #   Properties:
+  #     FunctionName: 'NotesTextExtract'
+  #     Runtime: 'python3.8'
+  #     Handler: 'notesTextract.lambda_handler'
+  #     Role: 'arn:aws:iam::967969319497:role/LabRole'
+  #     Code:
+  #       S3Bucket: 'b00932103backend'
+  #       S3Key: 'LambdaFunctions/notesTextract.zip'
   
   # Store File Lambda
   # NotesStoreFile:
@@ -105,65 +105,65 @@ Resources:
   ## S3Bucket
 
   #Bucket to store uploaded and extracted files
-  NotesS3Bucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: b00932103-notes-system
-      OwnershipControls:
-        Rules:
-          - ObjectOwnership: BucketOwnerPreferred
-      # AccessControl: PublicRead
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: false
-        BlockPublicPolicy: false
-        IgnorePublicAcls: false
-        RestrictPublicBuckets: false
-      CorsConfiguration:
-        CorsRules:
-          - AllowedHeaders:
-              - "*"
-            AllowedMethods:
-              - PUT
-              - POST
-              - DELETE
-              - GET
-            AllowedOrigins:
-              - "*"
+  # NotesS3Bucket:
+  #   Type: AWS::S3::Bucket
+  #   Properties:
+  #     BucketName: b00932103-notes-system
+  #     OwnershipControls:
+  #       Rules:
+  #         - ObjectOwnership: BucketOwnerPreferred
+  #     # AccessControl: PublicRead
+  #     PublicAccessBlockConfiguration:
+  #       BlockPublicAcls: false
+  #       BlockPublicPolicy: false
+  #       IgnorePublicAcls: false
+  #       RestrictPublicBuckets: false
+  #     CorsConfiguration:
+  #       CorsRules:
+  #         - AllowedHeaders:
+  #             - "*"
+  #           AllowedMethods:
+  #             - PUT
+  #             - POST
+  #             - DELETE
+  #             - GET
+  #           AllowedOrigins:
+  #             - "*"
       
 
   #Bucket Policy
-  NotesBucketPolicy:
-    Type: AWS::S3::BucketPolicy
-    Properties:
-      Bucket: !Ref NotesS3Bucket
-      PolicyDocument:
-        Statement:
-          - Effect: Allow
-            Principal: "*"
-            Action: s3:GetObject
-            Resource: !Sub "arn:aws:s3:::${NotesS3Bucket}/*"
-          - Effect: Allow
-            Principal: "*"
-            Action: s3:PutObject
-            Resource: !Sub "arn:aws:s3:::${NotesS3Bucket}/*"
+  # NotesBucketPolicy:
+  #   Type: AWS::S3::BucketPolicy
+  #   Properties:
+  #     Bucket: !Ref NotesS3Bucket
+  #     PolicyDocument:
+  #       Statement:
+  #         - Effect: Allow
+  #           Principal: "*"
+  #           Action: s3:GetObject
+  #           Resource: !Sub "arn:aws:s3:::${NotesS3Bucket}/*"
+  #         - Effect: Allow
+  #           Principal: "*"
+  #           Action: s3:PutObject
+  #           Resource: !Sub "arn:aws:s3:::${NotesS3Bucket}/*"
 
   #Bucket Triggered for file uploads
-  MyS3BucketNotificationConfiguration:
-    Type: AWS::S3::Bucket
-    Properties:
-      Bucket: !Ref NotesS3Bucket
-      NotificationConfiguration:
-        LambdaConfigurations:
-          - Event: s3:ObjectCreated:Put
-            Function: !GetAtt NotesTextExtract.Arn
-          - Event: s3:ObjectCreated:Post
-            Function: !GetAtt NotesTextExtract.Arn
-          - Event: s3:ObjectCreated:Copy
-            Function: !GetAtt NotesTextExtract.Arn
-          - Event: s3:ObjectCreated:CompleteMultipartUpload
-            Function: !GetAtt NotesTextExtract.Arn
-          - Event: s3:ObjectAcl
-            Function: !GetAtt NotesTextExtract.Arn
+  # MyS3BucketNotificationConfiguration:
+  #   Type: AWS::S3::Bucket
+  #   Properties:
+  #     Bucket: !Ref NotesS3Bucket
+  #     NotificationConfiguration:
+  #       LambdaConfigurations:
+  #         - Event: s3:ObjectCreated:Put
+  #           Function: !GetAtt NotesTextExtract.Arn
+  #         - Event: s3:ObjectCreated:Post
+  #           Function: !GetAtt NotesTextExtract.Arn
+  #         - Event: s3:ObjectCreated:Copy
+  #           Function: !GetAtt NotesTextExtract.Arn
+  #         - Event: s3:ObjectCreated:CompleteMultipartUpload
+  #           Function: !GetAtt NotesTextExtract.Arn
+  #         - Event: s3:ObjectAcl
+  #           Function: !GetAtt NotesTextExtract.Arn
 
   # API Gateway Creation for Routing to Lambdas
   NotesAPI:
@@ -648,13 +648,13 @@ Resources:
       - NotesAPIGatewayDeployment
 
   #Text Extract Lambda Permission
-  NotesTextExtractLambdaPermissionForS3:
-    Type: 'AWS::Lambda::Permission'
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !GetAtt NotesTextExtract.Arn
-      Principal: 's3.amazonaws.com'
-      SourceArn: !Sub 'arn:aws:s3:::b00932103-notes-system'
+  # NotesTextExtractLambdaPermissionForS3:
+  #   Type: 'AWS::Lambda::Permission'
+  #   Properties:
+  #     Action: 'lambda:InvokeFunction'
+  #     FunctionName: !GetAtt NotesTextExtract.Arn
+  #     Principal: 's3.amazonaws.com'
+  #     SourceArn: !Sub 'arn:aws:s3:::b00932103-notes-system'
 
   # Store File Lambda Permission
   # NotesStoreFileLambdaPermission:
@@ -691,10 +691,10 @@ Outputs:
   #   Value: !GetAtt NotesStoreFile.Arn
   #   Description: "ARN of the NotesStoreFile Lambda function"
 
-  NotesTextExtractLambdaArn:
-    Value: !GetAtt NotesTextExtract.Arn
-    Description: "ARN of the NotesTextExtract Lambda function"
+  # NotesTextExtractLambdaArn:
+  #   Value: !GetAtt NotesTextExtract.Arn
+  #   Description: "ARN of the NotesTextExtract Lambda function"
 
-  NotesBucket:
-    Value: !Ref NotesS3Bucket
-    Description: The name of the S3 bucket for notes
+  # NotesBucket:
+  #   Value: !Ref NotesS3Bucket
+  #   Description: The name of the S3 bucket for notes
