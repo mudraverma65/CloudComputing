@@ -11,6 +11,7 @@ const LandingPage = () => {
   const [courseList, setCourseList] = useState([]);
   const [token, setToken] = useState('');
   const [registrationMessage, setRegistrationMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   
 
   useEffect(() => {
@@ -59,6 +60,7 @@ const LandingPage = () => {
       if (response.ok) {
         const data = await response.json();
         setRegistrationMessage(data.message);
+        setSuccessMessage(data.message); // Set the success message here
         console.log('Registration successful');
         // Add any additional logic or UI updates for successful registration
       } else {
@@ -118,6 +120,12 @@ const LandingPage = () => {
       {registrationMessage && (
         <div className="mt-3 alert alert-success" role="alert">
           {registrationMessage}
+        </div>
+      )}
+
+      {successMessage && (
+        <div className="mt-3 alert alert-success" role="alert">
+          {successMessage}
         </div>
       )}
     </div>
