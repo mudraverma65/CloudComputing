@@ -11,7 +11,7 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     // Add your logic here to handle the login process
-    const url = 'https://opv3f1heqe.execute-api.us-east-1.amazonaws.com/prod/login';
+    const url = `${process.env.REACT_APP_API_ENDPOINT}/login`;
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

@@ -17,7 +17,7 @@ const LandingPage = () => {
   useEffect(() => {
     const fetchCourseList = async () => {
       try {
-        const response = await fetch('https://opv3f1heqe.execute-api.us-east-1.amazonaws.com/prod/course-list');
+        const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/course-list`);
         const data = await response.json();
         console.log(data); // Check the data fetched from the API
         setCourseList(data.body);
@@ -46,7 +46,7 @@ const LandingPage = () => {
 
   const handleRegisterCourse = async () => {
     try {
-      const response = await fetch('https://opv3f1heqe.execute-api.us-east-1.amazonaws.com/prod/register', {
+      const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -59,7 +59,7 @@ const LandingPage = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        setRegistrationMessage(data.message);
+        setRegistrationMessage('Registration successful');
         setSuccessMessage(data.message); // Set the success message here
         console.log('Registration successful');
         // Add any additional logic or UI updates for successful registration
@@ -115,6 +115,7 @@ const LandingPage = () => {
             Register
           </Button>
         </Modal.Footer>
+        
       </Modal>
 
       {registrationMessage && (
@@ -122,7 +123,6 @@ const LandingPage = () => {
           {registrationMessage}
         </div>
       )}
-
       {successMessage && (
         <div className="mt-3 alert alert-success" role="alert">
           {successMessage}

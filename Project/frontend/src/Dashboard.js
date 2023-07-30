@@ -7,10 +7,17 @@ const Dashboard = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [courseDetails, setCourseDetails] = useState(null);
   const [lectureNo, setLectureName] = useState('');
+  // const s3 = new AWS.S3({
+  //   accessKeyId: 'ASIA6CX3XVJEZJ3MXM3T',
+  //   secretAccessKey: '9vr56a3DhvadY1WRO1Rl1fpQu3b8aqXgIFnKgbgP',
+  //   sessionToken: 'FwoGZXIvYXdzECAaDAw/6b6llLMCHqY8PCLIAdPkJkUSjtHnLcJaVCxFdVZ6P6TeDvcWuVzgETENnOi+wmksaPCOY4ndiJm0GiVAQY+pGlJIUC3sq+krizXEREpLWypPJhDupCG6kQbhEBRDjToguYrQi2SyX53Q0I0DfEkmj4fv7+ay09hL9TFsdW8ceeP4BtXrLvG68JfNeQvz++JEarSCUlqPwIUqE3O8q7BgphchCsDup9E0vlx/uu1zEOJNJuWLjt8KVLB7dF174nFVT3yvkeZvirHc0EjBktGe0xY2kKwIKLvmmaYGMi3hQP9E3TDUXoV1CGnSxJcEN0D+hbKxjXWbljmlH+VLySqZeImh5c/tscfeBdU=',
+  //   region: 'us-east-1' // e.g., 'us-east-1'
+  // });
+
   const s3 = new AWS.S3({
-    accessKeyId: 'ASIA6CX3XVJEVBGBRVXH',
-    secretAccessKey: '5fRjt56W5W1txbkveFXv+t9EUY16t7bATzB6rSPW',
-    sessionToken: 'FwoGZXIvYXdzEPT//////////wEaDChyD1TYgG6hI0qrnCLIAeVtkC87VMQC+wnpbEO8FcmZKQY/qSyR24Gc7qaDIV5TeELNsSLZmRBoVdw64MoR+gN3mI5p80dp1dMBJdqR/SeU3Xc1kDpIjyu9zUV4q4UyJmlVmhG3lM/P1CM7GzKgusxSp5GZSSf6vrGUMUtzSUpwgQlRijCo9UM19EeyIXGKbP5Ly28xXxVUcKAYlmJSGa8lRM8zkPwyKM+0rzFAaX4ZWFdKaJsQ1UpJwadobvUfDy5/HoI8TIm2T3k/tEc5F29PRVYr5OYMKPaSkKYGMi07ZWytGLZ/vEn/pZUElxn61aXtc9lh6Z/ok964rMm7iYAsGxmbEUFY3gcPuoo=',
+    accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+    sessionToken: process.env.REACT_APP_AWS_SESSION_TOKEN,
     region: 'us-east-1' // e.g., 'us-east-1'
   });
   const { courseID } = useParams();
@@ -49,7 +56,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
-        const url = `https://opv3f1heqe.execute-api.us-east-1.amazonaws.com/prod/course?courseID=${courseID}`;
+        const url = `${process.env.REACT_APP_API_ENDPOINT}/course?courseID=${courseID}`;
         const response = await fetch(url);
         const data = await response.json();
         setCourseDetails(data.body);
