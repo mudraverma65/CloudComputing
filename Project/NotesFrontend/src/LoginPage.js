@@ -5,12 +5,13 @@ const LoginPage = () => {
   const [courseID, setCourseID] = useState('');
   const [password, setPassword] = useState('');
   const [loginStatus, setLoginStatus] = useState('');
+  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     // Add your logic here to handle the login process
-    const url = 'https://mqywz41q78.execute-api.us-east-1.amazonaws.com/prod/login';
+    const url = `${process.env.REACT_APP_API_ENDPOINT}/login`;
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -21,10 +22,12 @@ const LoginPage = () => {
       const response = await fetch(url, requestOptions);
       if (response.status === 200) {
         // Login successful
+        setIsLoginSuccess(true);
         setLoginStatus('Login successful');
         navigate(`/course/${courseID}`);
       } else {
         // Login failed
+        setIsLoginSuccess(false);
         setLoginStatus('Invalid credentials');
       }
     } catch (error) {
@@ -61,6 +64,7 @@ const LoginPage = () => {
         <button type="submit" className="btn btn-primary">Login</button>
       </form>
       {loginStatus && <p>{loginStatus}</p>}
+      {isLoginSuccess && <p>Login successful. Redirecting...</p>}
     </div>
   );
 };

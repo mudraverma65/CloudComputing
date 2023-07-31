@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { v4 as uuidv4 } from 'uuid';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -8,12 +9,15 @@ const LandingPage = () => {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [email, setEmail] = useState('');
   const [courseList, setCourseList] = useState([]);
+  const [token, setToken] = useState('');
   const [registrationMessage, setRegistrationMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  
 
   useEffect(() => {
     const fetchCourseList = async () => {
       try {
-        const response = await fetch('https://mqywz41q78.execute-api.us-east-1.amazonaws.com/prod/course-list');
+        const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/course-list`);
         const data = await response.json();
         console.log(data); // Check the data fetched from the API
         setCourseList(data.body);
@@ -28,6 +32,9 @@ const LandingPage = () => {
   const handleRegister = (courseId) => {
     setSelectedCourse(courseId);
     setShowModal(true);
+    const token = uuidv4();
+    setToken(token)
+    console.log(token)
   };
 
   const handleCloseModal = () => {
@@ -39,19 +46,21 @@ const LandingPage = () => {
 
   const handleRegisterCourse = async () => {
     try {
-      const response = await fetch('https://mqywz41q78.execute-api.us-east-1.amazonaws.com/prod/register', {
+      const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           emailID: email,
-          courseID: selectedCourse
+          courseID: selectedCourse,
+          Token: token
         })
       });
       if (response.ok) {
         const data = await response.json();
-        setRegistrationMessage(data.message);
+        setRegistrationMessage('Registration successful');
+        setSuccessMessage(data.message); // Set the success message here
         console.log('Registration successful');
         // Add any additional logic or UI updates for successful registration
       } else {
@@ -106,11 +115,17 @@ const LandingPage = () => {
             Register
           </Button>
         </Modal.Footer>
+        
       </Modal>
 
       {registrationMessage && (
         <div className="mt-3 alert alert-success" role="alert">
           {registrationMessage}
+        </div>
+      )}
+      {successMessage && (
+        <div className="mt-3 alert alert-success" role="alert">
+          {successMessage}
         </div>
       )}
     </div>

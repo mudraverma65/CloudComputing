@@ -13,8 +13,8 @@ const LandingPage = () => {
   const [registrationMessage, setRegistrationMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   
-
   useEffect(() => {
+
     const fetchCourseList = async () => {
       try {
         const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/course-list`);
@@ -25,8 +25,7 @@ const LandingPage = () => {
         console.error('Error fetching course list:', error);
       }
     };
-
-    fetchCourseList();
+    fetchCourseList(); 
   }, []);
 
   const handleRegister = (courseId) => {

@@ -539,74 +539,10 @@ Resources:
       Principal: apigateway.amazonaws.com
     DependsOn:
       - NotesAPIGatewayDeployment
-
-  ## Elasic Beanstalk
-
-  # Elastic Beanstalk Application to run the Frontend ReactJS Application 
-  NotesFrontendApplication:
-    Type: "AWS::ElasticBeanstalk::Application"
-    Properties:
-      Description: "Elastic Beanstalk Application for the Frontend"
-      ApplicationName: "NotesDistribution"
-
-  NotesFrontendAppVersion:
-    Type: "AWS::ElasticBeanstalk::ApplicationVersion"
-    Properties:
-      ApplicationName: !Ref NotesFrontendApplication
-      Description: "Application Version of the Frontend App"
-      SourceBundle:
-        S3Bucket: "b00932103frontend"
-        S3Key: "NotesFrontend.zip"
-
-  NotesFrontendAppConfigTemplate:
-    Type: "AWS::ElasticBeanstalk::ConfigurationTemplate"
-    Properties: 
-      ApplicationName: !Ref NotesFrontendApplication
-      Description: "Configuration Template for the Frontend App"
-      SolutionStackName: "64bit Amazon Linux 2 v5.8.3 running Node.js 18"
-      OptionSettings: 
-        - Namespace: "aws:autoscaling:launchconfiguration"
-          OptionName: "InstanceType"
-          Value: "t3.micro,t3.small"
-        - Namespace: "aws:autoscaling:launchconfiguration"
-          OptionName: "EC2KeyName"
-          Value: "vockey"
-        - Namespace: "aws:autoscaling:launchconfiguration"
-          OptionName: "IamInstanceProfile"
-          Value: "LabInstanceProfile"
-        - Namespace: "aws:elasticbeanstalk:environment"
-          OptionName: "ServiceRole"
-          Value: "arn:aws:iam::967969319497:role/LabRole"
-        - Namespace: "aws:elasticbeanstalk:environment"
-          OptionName: "EnvironmentType"
-          Value: "SingleInstance"
-        ### Environment Variables
-        - Namespace: "aws:elasticbeanstalk:application:environment"
-          OptionName: "REACT_APP_AWS_ACCESS_KEY_ID"
-          Value: "ASIA6CX3XVJETQLVYG7V"
-        - Namespace: "aws:elasticbeanstalk:application:environment"
-          OptionName: "REACT_APP_AWS_SECRET_ACCESS_KEY"
-          Value: "UWlV6K+2OJ7L9bNb7gnqv3n9rNXoqB0f+7YWt5Ff"
-        - Namespace: "aws:elasticbeanstalk:application:environment"
-          OptionName: "REACT_APP_AWS_SESSION_TOKEN"
-          Value: "FwoGZXIvYXdzECYaDMuE0ZrnorVnH1PqHyLIAU2Zjw3UKrUuadWOHqKpkMk7ziqh+1jxyOETtO8YJvTxQ2JgTvy78d1JS4HsT1mrwX3pAYz2rucl0JfSbGZ1K6n/8IOtJt4FaAMgC0XkGlmkDw1uRe/eyWoPxAg9A2xFMTddTvQSyp83MdHMjR7Xi03thx8Nh1FA2cI/c3gyGqMomiMY16j28L2kZLlRp3eDjDhU8A9+ovpKeNz8faF7C716ndR3VkNVnAIoeaCFQEgMoVPFGjFWWNZNg/yM0pxRwInCc+6w5Ht1KPeTm6YGMi3XTkeuGPTPT9eUDPqign/p5iFZmqNWCljKmLs1/2D8tCEzyUeovKmWxAXz6mY="
-        - Namespace: "aws:elasticbeanstalk:application:environment"
-          OptionName: "REACT_APP_API_ENDPOINT"
-          Value: !Sub "https://${NotesAPI}.execute-api.${AWS::Region}.amazonaws.com/prod"
-        
-
-  NotesFrontendAppEnvironment:
-    Type: "AWS::ElasticBeanstalk::Environment"
-    Properties:
-      ApplicationName: !Ref NotesFrontendApplication
-      EnvironmentName: "NotesFrontendEnv"
-      TemplateName: !Ref NotesFrontendAppConfigTemplate
-      VersionLabel: !Ref NotesFrontendAppVersion
-
-
+  
 Outputs:
   ApiGatewayUrl:
-    Value: !Sub "https://${NotesAPI}.execute-api.${AWS::Region}.amazonaws.com/prod"
+    Value: !Sub "https://${NotesAPI}.execute-api.${AWS::Region}.amazonaws.com/prod/"
     Description: "URL of the API Gateway endpoint"
 
   NotesCourseListLambdaArn:
@@ -632,11 +568,3 @@ Outputs:
   NotesBucketName:
     Value: !Ref NotesS3Bucket
     Description: The name of the S3 bucket for notes
-
-  ApplicationURL:
-    Description: "URL of the Elastic Beanstalk Frontend application"
-    Value:
-      Fn::Join:
-        - ""
-        - - "http://"
-          - Fn::GetAtt: [NotesFrontendAppEnvironment, EndpointURL]

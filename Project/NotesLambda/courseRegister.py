@@ -52,7 +52,7 @@ def update_email_ids(course_id, email_id):
     )
 
 def create_sns_topic(course_id):
-    topic_name = f'CourseTopic-{course_id}'
+    topic_name = f'{course_id}'
     response = sns_client.create_topic(Name=topic_name)
     topic_arn = response['TopicArn']
     return topic_arn
